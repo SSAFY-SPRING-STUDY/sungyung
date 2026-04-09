@@ -11,8 +11,8 @@ public class SessionManager {
 
     private Map<String, Long> sessionStore = new ConcurrentHashMap<>();
 
-
     public String createSession(Long id) {
+
         String uuid = String.valueOf(UUID.randomUUID());
 
         // sessionStore 저장

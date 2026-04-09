@@ -7,7 +7,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
+    // 401 예외처리
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleUnauthorized(UnauthorizedException e) {
+        return new ErrorResponse(401, e.getMessage());
+    }
     // 404 처리
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -19,6 +24,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleException(Exception e) {
-        return new ErrorResponse((500), "서버 에러");
+        e.printStackTrace();
+        return new ErrorResponse(500, "서버 에러");
     }
 }
