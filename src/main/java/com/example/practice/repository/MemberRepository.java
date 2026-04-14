@@ -29,12 +29,11 @@ public class MemberRepository {
     }
 
     public Optional<MemberEntity> findById(Long id) {
-        for (Long keyId : memberStore.keySet()) {
-            MemberEntity member = memberStore.get(keyId);
-            if (member.getId().equals(id)) {
-                return Optional.of(member);
-            }
+        MemberEntity member = memberStore.get(id);
+        if (member.getId().equals(id)) {
+            return Optional.of(member);
         }
+
         return Optional.empty();
     }
 

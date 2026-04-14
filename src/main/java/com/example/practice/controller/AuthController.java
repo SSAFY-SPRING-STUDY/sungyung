@@ -4,6 +4,7 @@ import com.example.practice.controller.dto.LoginRequest;
 import com.example.practice.controller.dto.LoginResponse;
 import com.example.practice.global.exception.UnauthorizedException;
 import com.example.practice.service.AuthService;
+import com.example.practice.util.BearerTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +26,12 @@ public class AuthController {
 
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void logout(@RequestHeader(value = "Authorization", required = false) String accessToken) {
-        if (accessToken == null || !accessToken.startsWith("Bearer ")) {
+    public void logout(@RequestHeader(value = "Authorization") String accessToken) {
+        if (accessToken == null || !BearerTokenUtil.isValidToken(accessToken)) {
             throw new UnauthorizedException("Invalid token format");
         }
-        accessToken = accessToken.substring(7).trim();
-        authorService.logout(accessToken);
+
+        String sessionKey = BearerTokenUtil.getSessionKey(accessToken);
+        authorService.logout(sessionKey);
     }
 }

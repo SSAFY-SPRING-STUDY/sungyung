@@ -4,6 +4,7 @@ import com.example.practice.component.SessionManager;
 import com.example.practice.controller.dto.MemberRequest;
 import com.example.practice.controller.dto.MemberResponse;
 import com.example.practice.service.MemberService;
+import com.example.practice.util.BearerTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 @RequestMapping("/api/members")
 public class MemberController {
-
     private final MemberService memberService;
     private final SessionManager sessionManager;
 
@@ -26,14 +26,14 @@ public class MemberController {
 
     @GetMapping("/me")
     @ResponseStatus(HttpStatus.OK)
-    public MemberResponse me(@RequestHeader(name = "Authorization", required = false) String accessToken) {
+    public MemberResponse me(@RequestHeader(name = "Authorization") String accessToken) {
 
-        if (accessToken == null || !accessToken.startsWith("Bearer ")) {
+        if (accessToken == null || !BearerTokenUtil.isValidToken(accessToken)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 //            throw new UnauthorizedException("Invalid token format");
         }
-        accessToken = accessToken.substring(7).trim();
-        Long memberId = sessionManager.getMemberId(accessToken);
+        String sessionKey = BearerTokenUtil.getSessionKey(accessToken);
+        Long memberId = sessionManager.getMemberId(sessionKey);
         if (memberId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 //            throw new UnauthorizedException("Invalid token");

@@ -28,7 +28,7 @@ public class AuthService {
         }
         // 로그인 성공
         String uuid = sessionManager.createSession(entity.getId());
-        return LoginResponse.from(uuid);
+        return LoginResponse.withUUID(uuid);
     }
 
     public void logout(String accessToken) {
