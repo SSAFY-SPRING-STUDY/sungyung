@@ -26,7 +26,6 @@ public class AuthController {
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void logout(@RequestHeader(value = "Authorization", required = false) String accessToken) {
-
         if (accessToken == null || !accessToken.startsWith("Bearer ")) {
             throw new UnauthorizedException("Invalid token format");
         }
