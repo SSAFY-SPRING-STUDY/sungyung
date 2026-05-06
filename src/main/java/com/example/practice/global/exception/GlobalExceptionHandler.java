@@ -1,25 +1,31 @@
 package com.example.practice.global.exception;
 
-//@RestControllerAdvice
+import com.example.practice.global.exception.error.ErrorCode;
+import com.example.practice.global.response.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-//    // 401 예외처리
-//    @ExceptionHandler(UnauthorizedException.class)
-//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-//    public ErrorResponse handleUnauthorized(UnauthorizedException e) {
-//        return new ErrorResponse(401, e.getMessage());
-//    }
-//    // 404 처리
-//    @ExceptionHandler(NotFoundException.class)
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    public ErrorResponse handleNotFound(NotFoundException e) {
-//        return new ErrorResponse(404, e.getMessage());
-//    }
-//
-//    // 500 처리 (기본 예외)
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ErrorResponse handleException(Exception e) {
-//        e.printStackTrace();
-//        return new ErrorResponse(500, "서버 에러");
-//    }
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCustomException(CustomException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(ApiResponse.error(errorCode));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
+        log.error("Unexpected error", e);
+        ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(ApiResponse.error(errorCode));
+
+    }
 }
