@@ -26,8 +26,6 @@ public class MemberService {
     public MemberResponse findById(Long id) {
         MemberEntity member = memberRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-//                .orElseThrow(() -> new NotFoundException("해당 아이디 없음"));
-
         return MemberResponse.from(member);
     }
 }

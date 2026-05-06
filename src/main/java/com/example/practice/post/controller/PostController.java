@@ -62,7 +62,7 @@ public class PostController {
         String sessionKey = AuthTokenUtils.getSessionKey(bearerToken);
         Long memberId = sessionManager.getMemberId(sessionKey);
         if (memberId == null) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED);
+            throw new CustomException(ErrorCode.INVALID_PERMISSION);
         }
         postService.update(request, id, memberId);
         return ApiResponse.success("게시글 수정 성공");

@@ -32,13 +32,11 @@ public class MemberController {
 
         if (accessToken == null || !AuthTokenUtils.isValidToken(accessToken)) {
             throw new CustomException(ErrorCode.INVALID_TOKEN);
-//            throw new UnauthorizedException("Invalid token format");
         }
         String sessionKey = AuthTokenUtils.getSessionKey(accessToken);
         Long memberId = sessionManager.getMemberId(sessionKey);
         if (memberId == null) {
             throw new CustomException(ErrorCode.UNAUTHORIZED);
-//            throw new UnauthorizedException("Invalid token");
         } // 401 -> Unauthorized
         return ApiResponse.success("회원 조회 성공", memberService.findById(memberId));
     }

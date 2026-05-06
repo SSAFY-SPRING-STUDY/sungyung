@@ -23,7 +23,6 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         return ApiResponse.success("로그인 성공", authorService.login(loginRequest));
-        // ResponseStatus -> 200 = HttpStatus.OK / 401 -> Unauthorized
     }
 
     @PostMapping("/logout")

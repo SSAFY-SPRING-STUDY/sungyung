@@ -54,7 +54,6 @@ public class PostService {
 
     // update
     public PostResponse update(PostRequest request, Long id, Long authorId) {
-//        System.out.println("Service : request " + request);
         PostEntity entity = postRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
