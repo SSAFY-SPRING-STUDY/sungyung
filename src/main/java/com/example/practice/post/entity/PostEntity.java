@@ -13,7 +13,6 @@ public class PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String title;
     private String content;
 
@@ -21,7 +20,7 @@ public class PostEntity {
     @JoinColumn(name = "author_id")
     private MemberEntity author;
 
-    public PostEntity(String title, String content, MemberEntity author) {
+    private PostEntity(String title, String content, MemberEntity author) {
         this.title = title;
         this.content = content;
         this.author = author;
