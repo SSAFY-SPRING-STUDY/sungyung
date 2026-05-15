@@ -10,6 +10,7 @@ import com.example.practice.post.entity.PostEntity;
 import com.example.practice.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,7 @@ public class PostService {
     }
 
     // update
+    @Transactional
     public PostResponse update(PostRequest request, Long id, Long authorId) {
         PostEntity entity = postRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));

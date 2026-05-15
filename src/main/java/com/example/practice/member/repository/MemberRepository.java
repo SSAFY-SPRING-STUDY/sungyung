@@ -1,41 +1,13 @@
 package com.example.practice.member.repository;
 
 import com.example.practice.member.entity.MemberEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class MemberRepository {
-    private static Map<Long, MemberEntity> memberStore = new ConcurrentHashMap<>();
-    private static long sequence = 0L;
-
-    public MemberEntity save(MemberEntity member) {
-        member.setId(++sequence);
-        memberStore.put(member.getId(), member);
-        return member;
-    }
-
-    public Optional<MemberEntity> findByLoginId(String loginId) {
-        for (Long id : memberStore.keySet()) {
-            MemberEntity member = memberStore.get(id);
-            if (member.getLoginId().equals(loginId)) {
-                return Optional.of(member);
-            }
-        }
-        return Optional.empty();
-    }
-
-    public Optional<MemberEntity> findById(Long id) {
-        MemberEntity member = memberStore.get(id);
-        if (member.getId().equals(id)) {
-            return Optional.of(member);
-        }
-
-        return Optional.empty();
-    }
-
+public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
+    Optional<MemberEntity> findByLoginId(String loginId);
 
 }
